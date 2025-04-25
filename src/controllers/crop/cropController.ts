@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import db from '../../db';
 import * as yup from 'yup';
-import { cultivationSchema } from '../../schemas/cultivation/cultivationSchema';
+import { cropSchema } from '../../schemas/cropSchema';
 
-export const getAllCultivations = async (req: Request, res: Response) => {
+export const getAllCrops = async (req: Request, res: Response) => {
   try {
     const cultivations = await db('crops').select('*');
 
     res.status(200).json({
       status: 200,
-      message: 'Cultivations found.',
+      message: 'Crops found.',
       data: cultivations,
     });
   } catch (error) {
@@ -17,21 +17,21 @@ export const getAllCultivations = async (req: Request, res: Response) => {
 
     res.status(500).json({
       status: 500,
-      message: 'Error fetching cultivations.',
+      message: 'Error fetching Crops.',
       data: [],
     });
   }
 };
 
-export const createCultivation = async (req: Request, res: Response) => {
+export const createCrop = async (req: Request, res: Response) => {
   try {
-    const data = await cultivationSchema.validate(req.body, { abortEarly: false });
+    const data = await cropSchema.validate(req.body, { abortEarly: false });
 
     const newCultivation = await db('crops').insert(data).returning('*');
 
     res.status(201).json({
       status: 201,
-      message: 'Cultivation created successfully.',
+      message: 'Crop created successfully.',
       data: newCultivation,
     });
   } catch (error: unknown) {
